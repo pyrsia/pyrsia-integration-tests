@@ -23,7 +23,7 @@ setup() {
   PYRSIA_CLI="$PYRSIA_TARGET_DIR"/pyrsia
 }
 
-@test "Testing 'pyrsia help', check if the help is shown." {
+@test "Testing 'pyrsia help' CLI, check if the help is shown." {
   # run pyrsia help
   run "$PYRSIA_CLI" help
   # check if pyrsia help is shown
@@ -39,14 +39,14 @@ setup() {
   assert_output --partial 'SUBCOMMANDS:'
 }
 
-@test "Testing 'pyrsia ping', check if the node is up and reachable." {
+@test "Testing 'pyrsia ping' CLI, check if the node is up and reachable." {
   # run pyrsia ping
   run "$PYRSIA_CLI" ping
   # check if pyrsia ping returns errors
   refute_output --partial 'Error'
 }
 
-@test "Testing 'pyrsia status', check if the node is connected to peers." {
+@test "Testing 'pyrsia status' CLI, check if the node is connected to peers." {
   # run pyrsia status
   run "$PYRSIA_CLI" status
   # check if pyrsia node has peers, fail if doesn't or error
@@ -69,7 +69,7 @@ setup() {
   refute_output --partial 'Error'
 }
 
-@test "Testing 'pyrsia config', show the config and check the values" {
+@test "Testing 'pyrsia config' CLI, show the config and check the values" {
   run "$PYRSIA_CLI" config --show
   assert_output --partial 'localhost'
   assert_output --partial '7888'
