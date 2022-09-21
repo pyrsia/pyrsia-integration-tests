@@ -1,0 +1,42 @@
+name: Integration Tests
+
+on: [ push ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  run-tests:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    runs-on: ubuntu-latest
+    env:
+      RUSTC_WRAPPER: /home/runner/.cargo/bin/sccache
+      CARGO_INCREMENTAL: 0
+    steps:
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      # Use sscache store in GitHub cache
+      - uses: actions/cache@v3
+        with:
+          path: /home/runner/.cache/sccache
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      # Install sccache from binary
+      - run: |
+          .github/workflows/sccache-linux.sh
+          sccache --start-server
+          sccache --show-stats
+
+      - name: Execute Test Cases
+        run: |
+          REPO_DIR="./" CLEAN_UP_TEST_ENVIRONMENT=false ./bats/lib/bats/bin/bats ./bats/tests
+          

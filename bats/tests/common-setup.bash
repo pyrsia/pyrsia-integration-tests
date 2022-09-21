@@ -4,8 +4,11 @@
 PYRSIA_TEMP_DIR=/tmp/pyrsia_tests/pyrsia
 # the pyrsia binaries
 PYRSIA_TARGET_DIR=$PYRSIA_TEMP_DIR/target/release
-# if "true" then the temp files (pyrsia sources, binaries, etc.) and the docker images/containers are destroyed in "teardown_file" method.
-CLEAN_UP_TEST_ENVIRONMENT=true
+# check if the env clean up is enabled
+if [ -z "$CLEAN_UP_TEST_ENVIRONMENT" ]; then
+  # if "true" then the temp files (pyrsia sources, binaries, etc.) and the docker images/containers are destroyed in "teardown_file" method.
+  CLEAN_UP_TEST_ENVIRONMENT=true
+fi
 
 _common_setup() {
   # load the bats "extensions"

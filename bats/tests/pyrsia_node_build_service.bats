@@ -3,7 +3,7 @@
 # common setup
 COMMON_SETUP='common-setup'
 # docker compose file
-DOCKER_COMPOSE_DIR="$(pwd)/tests/resources/docker/docker-compose_single_node.yml"
+DOCKER_COMPOSE_DIR="$REPO_DIR/bats/tests/resources/docker/docker-compose_single_node.yml"
 # maven build service mapping ID
 BUILD_SERVICE_MAVEN_MAPPING_ID="commons-codec:commons-codec:1.15"
 BUILD_SERVICE_DOCKER_MAPPING_ID="alpine:3.16"
