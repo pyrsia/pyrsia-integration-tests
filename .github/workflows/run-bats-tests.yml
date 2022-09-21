@@ -1,6 +1,12 @@
 name: Integration Tests
 
-on: [ push ]
+on:
+  pull_request:
+    types:
+      - opened
+  schedule:
+    # the tests scheduled at 3PM every day
+    - cron: '0 15 * * *'
 
 env:
   CARGO_TERM_COLOR: always
