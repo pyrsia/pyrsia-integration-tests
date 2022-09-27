@@ -36,7 +36,6 @@ $ REPO_DIR=$REPO_DIR $REPO_DIR/bats/run_tests.sh
    - Test 'pyrsia ping' CLI, check if the node is up and reachable.
    - Test 'pyrsia status' CLI, check if the node is connected to peers.
    - Test 'pyrsia list' CLI, check if the node returns the list of peers.
-     - NOTE: temporarily disabled with timeout, problems with P2P and listing the peer nodes
    - Test 'pyrsia config' CLI, show the config and check the values
    - Test 'pyrsia version' CLI, check if the CLI version shows.
    - Test 'pyrsia build' help options CLI, check if the BUILD help is shown.

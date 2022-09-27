@@ -55,7 +55,6 @@ setup() {
 }
 
 @test "Testing 'pyrsia list' CLI, check if the node returns the list of peers." {
-  skip
   # run pyrsia list
   run "$PYRSIA_CLI" list
   # Fail if the list is empty or error
