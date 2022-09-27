@@ -13,7 +13,6 @@ a simple way to verify that the UNIX programs you write behave as expected.
 | bats-core    | bats/lib/bats   | https://github.com/bats-core/bats-core.git |
 | bats-support | bats/lib/test_helper/bats-support | https://github.com/bats-core/bats-support.git |
 | bats-assert  | bats/lib/test_helper/bats-assert   | https://github.com/bats-core/bats-assert.git |
-| bats-files   | bats/lib/test_helper/bats-files   | https://github.com/bats-core/bats-assert.git |
 - Supported platforms: Linux (x86), macOs (x86, m1), windows (WSL)
 - Linter (github actions):  [ShellCheck](https://www.shellcheck.net)/[Shell Linter](https://github.com/azohra/shell-linter)
 
