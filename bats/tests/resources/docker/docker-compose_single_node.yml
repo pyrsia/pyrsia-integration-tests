@@ -1,0 +1,16 @@
+services:
+  node_with_build_service:
+    image: pyrsia/node_with_build_service
+    build:
+      context: .
+      target: node_with_build_service
+    command: [/src/entrypoint_single_node_build_service.sh]
+    stdin_open: true
+    ports:
+      - "8080:8080"
+      - "7888:7888"
+    volumes:
+      - "pyrsia:/tmp"
+
+volumes:
+  pyrsia:
