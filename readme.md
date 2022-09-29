@@ -50,11 +50,16 @@ REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
    - Test 'pyrsia list' CLI, check if the node returns the list of peers.
    - Test 'pyrsia config' CLI, show the config and check the values
    - Test 'pyrsia version' CLI, check if the CLI version shows.
-   - Test 'pyrsia build' help options CLI, check if the BUILD help is shown.
-   - Test 'pyrsia inspect-log' help/options CLI, check if the INSPECT-LOG help is shown.
+   - Test 'pyrsia build' help options CLI, check if the build help is shown.
+   - Test 'pyrsia inspect-log' help/options CLI, check if the inspect-log help is shown.
+   - Test 'pyrsia authorize' help/options CLI, check if the authorize help is shown.
 2) Pyrsia build service
    - Test the build service, MAVEN (build, inspect-log).
-     - NOTE: This test is partly disabled because of <https://github.com/pyrsia/pyrsia/issues/1032>
    - Test the build service, DOCKER (build docker image, inspect-log)
 3) Pyrsia P2P service, client side (project)
    - TBD
+
+## Clean up tests environment
+
+The docker containers created by the tests framework are removed when CLEAN_UP_TEST_ENVIRONMENT=true (default).
+The docker images have to be removed manually. The Pyrsia integration tests also use the temp directory `/tmp/pyrsia_tests`

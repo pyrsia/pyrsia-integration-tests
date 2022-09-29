@@ -91,7 +91,7 @@ setup() {
   assert_output --partial 'pyrsia_cli'
 }
 
-@test "Testing 'pyrsia build' help options, check if the BUILD help is shown." {
+@test "Testing 'pyrsia build' help options, check if the build help is shown." {
   # run pyrsia build help
   run "$PYRSIA_CLI" build
   # check if the BUILD help is shown
@@ -111,7 +111,7 @@ setup() {
   assert_output --partial 'maven'
 }
 
-@test "Testing 'pyrsia inspect-log' help/options, check if the INSPECT-LOG help is shown." {
+@test "Testing 'pyrsia inspect-log' help/options, check if the inspect-log help is shown." {
   # run pyrsia inspect log help
   run "$PYRSIA_CLI" inspect-log -h
   # check if the INSPECT-LOG help is shown
@@ -122,4 +122,15 @@ setup() {
   # check if the INSPECT-LOG help is shown
   assert_output --partial 'docker'
   assert_output --partial 'maven'
+}
+
+@test "Testing 'pyrsia authorize' help/options, check if the authorize help is shown." {
+  # run pyrsia authorize log help
+  run "$PYRSIA_CLI" authorize -h
+  # check if the authorize help is shown
+  assert_output --partial 'peer'
+
+  run "$PYRSIA_CLI" authorize
+  # check if the authorize help is shown
+  assert_output --partial 'peer'
 }

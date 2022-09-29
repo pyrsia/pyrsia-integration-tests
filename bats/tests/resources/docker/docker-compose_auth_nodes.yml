@@ -1,0 +1,32 @@
+services:
+  auth_node_with_build_service:
+    image: pyrsia/node_with_build_service
+    build:
+      context: .
+      target: node_with_build_service
+    command: [ /src/entrypoint_auth_node.sh ]
+    stdin_open: true
+    ports:
+      - "7889:7889"
+      - "8080:8080"
+      - "44001:44001"
+    volumes:
+      - "pyrsia:/tmp"
+
+  node_no_bootstrap:
+    image: pyrsia/node_with_build_service
+    build:
+      context: .
+      target: node_with_build_service
+    command: [ /src/entrypoint_no_bootstrap_node.sh ]
+    stdin_open: true
+    ports:
+      - "7888:7888"
+      - "44000:44000"
+    volumes:
+      - "pyrsia:/tmp"
+    links:
+      - auth_node_with_build_service
+
+volumes:
+  pyrsia:

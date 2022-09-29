@@ -10,7 +10,7 @@ RUN git clone https://github.com/tiainen/pyrsia_build_pipeline_prototype.git
 WORKDIR /src/pyrsia_build_pipeline_prototype
 RUN PATH="$HOME/.cargo/bin:$PATH" RUST_LOG=debug cargo build
 WORKDIR /src
-COPY entrypoint_bootstrap.sh entrypoint_single_node_build_service.sh ./
+COPY entrypoint_bootstrap_node.sh entrypoint_no_bootstrap_node.sh entrypoint_auth_node.sh ./
 RUN chmod +x ./*.sh
 RUN git clone https://github.com/pyrsia/pyrsia.git
 WORKDIR /src/pyrsia
