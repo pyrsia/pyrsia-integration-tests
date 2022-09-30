@@ -1,4 +1,5 @@
 # Pyrsia Integration Tests
+
 ## Overview
 
 The integration tests use the [Bats](https://github.com/bats-core/bats-core) framework. [Bats](https://github.com/bats-core/bats-core) is a TAP-compliant testing framework for Bash. It provides
@@ -10,9 +11,10 @@ a simple way to verify that the UNIX programs you write behave as expected.
 
 | Bats lib     | path  | repository |
 |--------------|-------|------------|
-| bats-core    | bats/lib/bats   | https://github.com/bats-core/bats-core.git |
-| bats-support | bats/lib/test_helper/bats-support | https://github.com/bats-core/bats-support.git |
-| bats-assert  | bats/lib/test_helper/bats-assert   | https://github.com/bats-core/bats-assert.git |
+| bats-core    | bats/lib/bats   | <https://github.com/bats-core/bats-core.git> |
+| bats-support | bats/lib/test_helper/bats-support | <https://github.com/bats-core/bats-support.git> |
+| bats-assert  | bats/lib/test_helper/bats-assert   | <https://github.com/bats-core/bats-assert.git> |
+
 - Supported platforms: Linux (x86), macOs (x86, m1), windows (WSL)
 - Linter (github actions):  [ShellCheck](https://www.shellcheck.net)/[Shell Linter](https://github.com/azohra/shell-linter)
 
@@ -21,16 +23,26 @@ a simple way to verify that the UNIX programs you write behave as expected.
 Fetch the repository with the dependencies (the submodules are necessary to successfully execute the tests):
 
 ```sh
-$ git clone --recurse-submodules https://github.com/pyrsia/pyrsia-integration-tests.git
+git clone --recurse-submodules https://github.com/pyrsia/pyrsia-integration-tests.git
+
+```
+
+In case you forgot to set `--recurse-submodules` during `clone` you can run the following command for the same effect:
+
+```
+git submodule update --init
 ```
 
 Run the tests:
 
+Prerequisite: Ensure that docker daemon is running
+
 ```sh
-$ REPO_DIR=$REPO_DIR $REPO_DIR/bats/run_tests.sh
+REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
 ```
 
 ## Tests (scope)
+
 1) Pyrsia CLI/connectivity related tests
    - Test 'pyrsia help' CLI, check if the help is shown.
    - Test 'pyrsia ping' CLI, check if the node is up and reachable.
@@ -42,7 +54,7 @@ $ REPO_DIR=$REPO_DIR $REPO_DIR/bats/run_tests.sh
    - Test 'pyrsia inspect-log' help/options CLI, check if the INSPECT-LOG help is shown.
 2) Pyrsia build service
    - Test the build service, MAVEN (build, inspect-log).
-     - NOTE: This test is partly disabled because of https://github.com/pyrsia/pyrsia/issues/1032
+     - NOTE: This test is partly disabled because of <https://github.com/pyrsia/pyrsia/issues/1032>
    - Test the build service, DOCKER (build docker image, inspect-log)
 3) Pyrsia P2P service, client side (project)
    - TBD
