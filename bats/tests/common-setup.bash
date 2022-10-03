@@ -9,8 +9,6 @@ if [ -z "$CLEAN_UP_TEST_ENVIRONMENT" ]; then
   # if "true" then the temp files (pyrsia sources, binaries, etc.) and the docker images/containers are destroyed in "teardown_file" method.
   CLEAN_UP_TEST_ENVIRONMENT=true
 fi
-# debug mode
-DEBUG=true
 
 _common_setup() {
   # load the bats "extensions"
@@ -33,18 +31,12 @@ _common_setup_file() {
 
   echo "Building the Pyrsia CLI sources, it might take a while..." >&3
   echo "Pyrsia CLI source dir: $PYRSIA_TEMP_DIR" >&3
-  local cargo_logs=$(cargo build --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml)
-  if [ "$DEBUG" = true ]; then
-      echo "$cargo_logs" >&3
-  fi
+  cargo build --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml >&3
   echo "Building Pyrsia CLI completed!" >&3
   echo "Building the Pyrsia node docker image and starting the container, it might take a while..." >&3
   DOCKER_COMPOSE_PATH=$1;
-  local docker_logs=$(docker-compose -f "$DOCKER_COMPOSE_PATH" logs)
-  if [ "$DEBUG" = true ]; then
-    echo "$docker_logs" >&3
-  fi
   docker-compose -f "$DOCKER_COMPOSE_PATH" up -d >&3
+  sleep 10
   # check periodically if the node is up (using pyrsia ping)
   # shellcheck disable=SC2034
   for i in {0..20..1}
@@ -64,13 +56,10 @@ _common_setup_file() {
 _common_teardown_file() {
   unset BATS_TEST_TIMEOUT
   echo " " >&3
+  docker-compose -f "$DOCKER_COMPOSE_PATH" logs >&3
   if [ "$CLEAN_UP_TEST_ENVIRONMENT" = true ]; then
     echo "Tearing down the tests environment..." >&3
     echo "Cleaning up the docker images and containers..."  >&3
-    local docker_logs=$(docker-compose -f "$DOCKER_COMPOSE_PATH" logs)
-    if [ "$DEBUG" = true ]; then
-       echo "$docker_logs" >&3
-    fi
     docker-compose -f "$DOCKER_COMPOSE_PATH" down --rmi all >&3
   else
     echo "Stopping the docker containers..." >&3

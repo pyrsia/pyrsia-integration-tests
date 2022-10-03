@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # wait until the node service is ready (the node service is defined in pyrsia-integration-tests/bats/tests/resources/docker/docker-compose_auth_nodes.yml)
 # shellcheck disable=SC2034
 for i in {0..20}
@@ -8,7 +7,7 @@ do
   BOOTADDR=$(curl -s http://auth_node_with_build_service:7889/status | jq -r ".peer_addrs[0]")
 
   # debug
-  echo "NODE STATUS = $(curl -s http://auth_node_with_build_service:7889/status)"
+  echo "NODE STATUS [curl -s http://auth_node_with_build_service:7889/status] = $(curl -s http://auth_node_with_build_service:7889/status)"
 
   if [[ "$BOOTADDR" == *"ip4/127"* ]]; then
      BOOTADDR=$(curl -s http://auth_node_with_build_service:7889/status | jq -r ".peer_addrs[1]")

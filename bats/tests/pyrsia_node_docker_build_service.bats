@@ -56,4 +56,3 @@ setup() {
   assert_output --partial $BUILD_SERVICE_DOCKER_MAPPING_ID
   echo -e "\t- Docker image built successfully - $BUILD_SERVICE_DOCKER_MAPPING_ID" >&3
 }
-

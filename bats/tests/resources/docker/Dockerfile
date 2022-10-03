@@ -14,4 +14,5 @@ COPY entrypoint_bootstrap_node.sh entrypoint_no_bootstrap_node.sh entrypoint_aut
 RUN chmod +x ./*.sh
 RUN git clone https://github.com/pyrsia/pyrsia.git
 WORKDIR /src/pyrsia
-RUN PATH="$HOME/.cargo/bin:$PATH" RUST_LOG=debug cargo build --package=pyrsia_node
+#RUN PATH="$HOME/.cargo/bin:$PATH" RUST_LOG=debug cargo build --package=pyrsia_node
+RUN PATH="$HOME/.cargo/bin:$PATH" RUST_LOG=debug cargo build --workspace
