@@ -4,9 +4,10 @@ on:
   pull_request:
     types:
       - opened
+      - reopened
   schedule:
     # the tests scheduled at 3PM every day
-    - cron: '0 15 * * *'
+    - cron: '0 3,15 * * *'
 
 env:
   CARGO_TERM_COLOR: always
