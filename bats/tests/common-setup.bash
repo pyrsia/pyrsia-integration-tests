@@ -52,7 +52,8 @@ _common_teardown_file() {
   unset BATS_TEST_TIMEOUT
   echo " " >&3
   CLEAN_UP_TEST_ENVIRONMENT=true
-  # docker-compose -f "$DOCKER_COMPOSE_PATH" logs >&3
+  # print docker logs
+  #docker-compose -f "$DOCKER_COMPOSE_PATH" logs >&3
   if [ "$CLEAN_UP_TEST_ENVIRONMENT" = true ]; then
     echo "Tearing down the tests environment..." >&3
     echo "Cleaning up the docker images and containers..."  >&3

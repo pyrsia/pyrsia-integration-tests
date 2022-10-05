@@ -35,7 +35,7 @@ git submodule update --init
 
 Run the tests:
 
-Prerequisite: Ensure that docker daemon is running
+Prerequisite: Ensure that docker daemon is running and [JQ](https://stedolan.github.io/jq/) is installed.
 
 ```sh
 REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh

@@ -4,13 +4,14 @@
 for i in {0..20}
 do
   # obtain the boot address from the auth node service (defined in pyrsia-integration-tests/bats/tests/resources/docker/docker-compose_auth_nodes.yml)
-  BOOTADDR=$(curl -s http://auth_node_with_build_service:7889/status | jq -r ".peer_addrs[0]")
+  NODE_STATUS=$(curl -s http://auth_node_with_build_service:7889/status)
+  BOOTADDR=$(jq -r ".peer_addrs[0]"  <<< "$NODE_STATUS")
 
   # debug
   echo "NODE STATUS [curl -s http://auth_node_with_build_service:7889/status] = $(curl -s http://auth_node_with_build_service:7889/status)"
 
   if [[ "$BOOTADDR" == *"ip4/127"* ]]; then
-     BOOTADDR=$(curl -s http://auth_node_with_build_service:7889/status | jq -r ".peer_addrs[1]")
+     BOOTADDR=$(jq -r ".peer_addrs[1]"  <<< "$NODE_STATUS")
   fi
   if [ -n "$BOOTADDR" ] && [ "$BOOTADDR" != "null" ]; then
     # the boot address obtained, break

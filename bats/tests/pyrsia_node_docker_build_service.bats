@@ -31,7 +31,6 @@ setup() {
 #  # confirm the artifact is not already added to pyrsia node
 #  run "$PYRSIA_CLI" inspect-log docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID
 #  refute_output --partial $BUILD_SERVICE_DOCKER_MAPPING_ID
-
   # add authorize node
   _set_node_as_authorized "localhost:7889"
 
