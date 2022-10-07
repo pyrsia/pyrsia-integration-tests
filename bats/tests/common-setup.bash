@@ -24,8 +24,7 @@ _common_setup_file() {
     git clone --branch $git_branch $git_repo $PYRSIA_TEMP_DIR
   fi
 
-  echo "Building the Pyrsia CLI sources, it might take a while..." >&3
-  echo "Pyrsia CLI source dir: $PYRSIA_TEMP_DIR" >&3
+  echo "Building the Pyrsia CLI sources (Pyrsia CLI source dir: $PYRSIA_TEMP_DIR), it might take a while..." >&3
   cargo build -q --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml
   echo "Building Pyrsia CLI completed!" >&3
   echo "Building the Pyrsia node docker image and starting the container, it might take a while..." >&3
