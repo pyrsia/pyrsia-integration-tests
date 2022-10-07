@@ -6,6 +6,12 @@ if (! docker stats --no-stream ); then
   exit 1
 fi
 
+if ! command -v jq &> /dev/null
+then
+    echo "'jq' is required and could not be found, please install 'jq'"
+    exit
+fi
+
 # identify repo path
 if [ -z "$REPO_DIR" ]; then
   echo "The REPO_DIR variable is not specified, Please provide the integration tests repository path (e.g. '$HOME/pyrsia-integration-tests')."

@@ -1,10 +1,10 @@
 services:
-  node_with_build_service:
+  node_bootstrap:
     image: pyrsia/node_with_build_service
     build:
       context: .
       target: node_with_build_service
-    command: [/src/entrypoint_bootstrap.sh]
+    command: [/src/entrypoint_bootstrap_node.sh]
     stdin_open: true
     ports:
       - "8080:8080"
