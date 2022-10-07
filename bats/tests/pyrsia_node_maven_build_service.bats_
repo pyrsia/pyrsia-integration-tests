@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO This test is disabled for now, more info in https://github.com/pyrsia/pyrsia/issues/1140
+
 # common setup
 COMMON_SETUP='common-setup'
 # docker compose file
