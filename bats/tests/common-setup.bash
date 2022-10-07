@@ -26,11 +26,11 @@ _common_setup_file() {
 
   echo "Building the Pyrsia CLI sources, it might take a while..." >&3
   echo "Pyrsia CLI source dir: $PYRSIA_TEMP_DIR" >&3
-  cargo build --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml >&3
+  cargo build -q --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml
   echo "Building Pyrsia CLI completed!" >&3
   echo "Building the Pyrsia node docker image and starting the container, it might take a while..." >&3
   DOCKER_COMPOSE_PATH=$1;
-  docker-compose -f "$DOCKER_COMPOSE_PATH" up -d >&3
+  docker-compose -f "$DOCKER_COMPOSE_PATH" up -d
   sleep 10
   # check periodically if the node is up (using pyrsia ping)
   # shellcheck disable=SC2034
@@ -57,10 +57,10 @@ _common_teardown_file() {
   if [ "$CLEAN_UP_TEST_ENVIRONMENT" = true ]; then
     echo "Tearing down the tests environment..." >&3
     echo "Cleaning up the docker images and containers..."  >&3
-    docker-compose -f "$DOCKER_COMPOSE_PATH" down --rmi all >&3
+    docker-compose -f "$DOCKER_COMPOSE_PATH" down --rmi all
   else
     echo "Stopping the docker containers..." >&3
-    docker-compose -f "$DOCKER_COMPOSE_PATH" stop >&3
+    docker-compose -f "$DOCKER_COMPOSE_PATH" stop
     echo "WARNING: The docker images/container was not removed because 'CLEAN_UP_TEST_ENVIRONMENT'=FALSE'"  >&3
   fi
   echo "Done tearing the tests environment!" >&3
