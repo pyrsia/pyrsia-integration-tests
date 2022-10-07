@@ -61,5 +61,7 @@ REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
 
 ## Clean up tests environment
 
-The docker containers created by the tests framework are removed when CLEAN_UP_TEST_ENVIRONMENT=true (default).
-The docker images have to be removed manually. The Pyrsia integration tests also use the temp directory `/tmp/pyrsia_tests`
+The docker containers and images created by the tests framework are removed when CLEAN_UP_TEST_ENVIRONMENT=true (default).
+The docker images and containers have to be removed manually if CLEAN_UP_TEST_ENVIRONMENT=false. The Pyrsia integration
+tests also create the temp directory `/tmp/pyrsia_tests`which is not removed by the test and if necessary has to be removed
+manually.
