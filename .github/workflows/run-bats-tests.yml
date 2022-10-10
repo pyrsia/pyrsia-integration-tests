@@ -1,19 +1,22 @@
 name: Integration Tests
 
 on:
+  schedule:
+    # scheduled at 3PM and 3AM daily
+    - cron: '0 3,15 * * *'
   pull_request:
     types:
       - opened
+      - closed
+      - synchronized
       - reopened
-  schedule:
-    # the tests scheduled at 3PM every day
-    - cron: '0 3,15 * * *'
+      - ready_for_review
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  run-tests:
+  run-integration-tests:
     permissions:
       contents: 'read'
       id-token: 'write'
