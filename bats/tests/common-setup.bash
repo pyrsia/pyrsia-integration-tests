@@ -13,15 +13,19 @@ _common_setup() {
 
 _common_setup_file() {
   echo "Setting up the test environment..." >&3
-  local git_repo="https://github.com/pyrsia/pyrsia.git"
-  local git_branch="main"
+  if [ -z "$GIT_REPO" ]; then
+    GIT_REPO="https://github.com/pyrsia/pyrsia.git"
+  fi
+  if [ -z "$GIT_BRANCH" ]; then
+    GIT_BRANCH="main"
+  fi
   # clone or update the sources
   if [ -d $PYRSIA_TEMP_DIR/.git ]; then
     git --git-dir=$PYRSIA_TEMP_DIR/.git fetch
-    git --git-dir=$PYRSIA_TEMP_DIR/.git --work-tree=$PYRSIA_TEMP_DIR merge origin/$git_branch
+    git --git-dir=$PYRSIA_TEMP_DIR/.git --work-tree=$PYRSIA_TEMP_DIR merge origin/$GIT_BRANCH
   else
     mkdir -p $PYRSIA_TEMP_DIR
-    git clone --branch $git_branch $git_repo $PYRSIA_TEMP_DIR
+    git clone --branch $GIT_BRANCH $GIT_REPO $PYRSIA_TEMP_DIR
   fi
 
   echo "Building the Pyrsia CLI sources (Pyrsia CLI source dir: $PYRSIA_TEMP_DIR), it might take a while..." >&3

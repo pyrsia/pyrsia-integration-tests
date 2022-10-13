@@ -41,6 +41,10 @@ Prerequisite: Ensure that docker daemon is running and [JQ](https://stedolan.git
 REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
 ```
 
+Optional variables for `run_tests.sh` script:
+- `GIT_REPO=<git repository URL>`, default value: `https://github.com/pyrsia/pyrsia.git`
+- `GIT_BRANCH=<branch repository name>`, default value: `main`
+
 ## Tests (scope)
 
 1) Pyrsia CLI/connectivity related tests
@@ -63,5 +67,5 @@ REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
 
 The docker containers and images created by the tests framework are removed when CLEAN_UP_TEST_ENVIRONMENT=true (default).
 The docker images and containers have to be removed manually if CLEAN_UP_TEST_ENVIRONMENT=false. The Pyrsia integration
-tests also create the temp directory `/tmp/pyrsia_tests`which is not removed by the test and if necessary has to be removed
+tests also create the temp directory `/tmp/pyrsia_tests`which is not removed by the tests framework and if necessary has to be removed
 manually.
