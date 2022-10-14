@@ -33,9 +33,17 @@ In case you forgot to set `--recurse-submodules` during `clone` you can run the 
 git submodule update --init
 ```
 
-Run the tests:
+Prerequisite: 
+- Ensure that docker daemon is running and [JQ](https://stedolan.github.io/jq/) is installed.
+- Ensure the pyrsia config contains the values shown below (show pyrsia config - `pyrsia config --show`):
 
-Prerequisite: Ensure that docker daemon is running and [JQ](https://stedolan.github.io/jq/) is installed.
+```
+host = 'localhost'
+port = '7888'
+disk_allocated = '10 GB'
+```
+
+Run the tests:
 
 ```sh
 REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
