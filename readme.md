@@ -33,25 +33,13 @@ In case you forgot to set `--recurse-submodules` during `clone` you can run the 
 git submodule update --init
 ```
 
-Prerequisite: 
-- Ensure that docker daemon is running and [JQ](https://stedolan.github.io/jq/) is installed.
-- Ensure the pyrsia config contains the values shown below (show pyrsia config - `pyrsia config --show`):
-
-```
-host = 'localhost'
-port = '7888'
-disk_allocated = '10 GB'
-```
-
 Run the tests:
+
+Prerequisite: Ensure that docker daemon is running and [JQ](https://stedolan.github.io/jq/) is installed.
 
 ```sh
 REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
 ```
-
-Optional variables for `run_tests.sh` script:
-- `GIT_REPO=<git repository URL>`, default value: `https://github.com/pyrsia/pyrsia.git`
-- `GIT_BRANCH=<branch repository name>`, default value: `main`
 
 ## Tests (scope)
 
@@ -73,7 +61,5 @@ Optional variables for `run_tests.sh` script:
 
 ## Clean up tests environment
 
-The docker containers and images created by the tests framework are removed when CLEAN_UP_TEST_ENVIRONMENT=true (default).
-The docker images and containers have to be removed manually if CLEAN_UP_TEST_ENVIRONMENT=false. The Pyrsia integration
-tests also create the temp directory `/tmp/pyrsia_tests`which is not removed by the tests framework and if necessary has to be removed
-manually.
+The docker containers created by the tests framework are removed when CLEAN_UP_TEST_ENVIRONMENT=true (default).
+The docker images have to be removed manually. The Pyrsia integration tests also use the temp directory `/tmp/pyrsia_tests`
