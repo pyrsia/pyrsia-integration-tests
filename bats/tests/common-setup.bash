@@ -13,27 +13,24 @@ _common_setup() {
 
 _common_setup_file() {
   echo "Setting up the test environment..." >&3
-  if [ -z "$GIT_REPO" ]; then
-    GIT_REPO="https://github.com/pyrsia/pyrsia.git"
-  fi
-  if [ -z "$GIT_BRANCH" ]; then
-    GIT_BRANCH="main"
-  fi
+  local git_repo="https://github.com/pyrsia/pyrsia.git"
+  local git_branch="main"
   # clone or update the sources
   if [ -d $PYRSIA_TEMP_DIR/.git ]; then
     git --git-dir=$PYRSIA_TEMP_DIR/.git fetch
-    git --git-dir=$PYRSIA_TEMP_DIR/.git --work-tree=$PYRSIA_TEMP_DIR merge origin/$GIT_BRANCH
+    git --git-dir=$PYRSIA_TEMP_DIR/.git --work-tree=$PYRSIA_TEMP_DIR merge origin/$git_branch
   else
     mkdir -p $PYRSIA_TEMP_DIR
-    git clone --branch $GIT_BRANCH $GIT_REPO $PYRSIA_TEMP_DIR
+    git clone --branch $git_branch $git_repo $PYRSIA_TEMP_DIR
   fi
 
-  echo "Building the Pyrsia CLI sources (Pyrsia CLI source dir: $PYRSIA_TEMP_DIR), it might take a while..." >&3
-  cargo build -q --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml
+  echo "Building the Pyrsia CLI sources, it might take a while..." >&3
+  echo "Pyrsia CLI source dir: $PYRSIA_TEMP_DIR" >&3
+  cargo build --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml >&3
   echo "Building Pyrsia CLI completed!" >&3
   echo "Building the Pyrsia node docker image and starting the container, it might take a while..." >&3
   DOCKER_COMPOSE_PATH=$1;
-  docker-compose -f "$DOCKER_COMPOSE_PATH" up -d
+  docker-compose -f "$DOCKER_COMPOSE_PATH" up -d >&3
   sleep 10
   # check periodically if the node is up (using pyrsia ping)
   # shellcheck disable=SC2034
@@ -60,10 +57,10 @@ _common_teardown_file() {
   if [ "$CLEAN_UP_TEST_ENVIRONMENT" = true ]; then
     echo "Tearing down the tests environment..." >&3
     echo "Cleaning up the docker images and containers..."  >&3
-    docker-compose -f "$DOCKER_COMPOSE_PATH" down --rmi all
+    docker-compose -f "$DOCKER_COMPOSE_PATH" down --rmi all >&3
   else
     echo "Stopping the docker containers..." >&3
-    docker-compose -f "$DOCKER_COMPOSE_PATH" stop
+    docker-compose -f "$DOCKER_COMPOSE_PATH" stop >&3
     echo "WARNING: The docker images/container was not removed because 'CLEAN_UP_TEST_ENVIRONMENT'=FALSE'"  >&3
   fi
   echo "Done tearing the tests environment!" >&3
