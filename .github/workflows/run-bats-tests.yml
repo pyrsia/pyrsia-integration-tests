@@ -7,16 +7,14 @@ on:
   pull_request:
     types:
       - opened
-      - closed
-      - synchronized
+      - synchronize
       - reopened
-      - ready_for_review
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  run-integration-tests:
+  run-tests:
     permissions:
       contents: 'read'
       id-token: 'write'
