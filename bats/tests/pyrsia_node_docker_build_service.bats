@@ -60,6 +60,7 @@ setup() {
 
     # check if the built image can be pulled from the Pyrsia node
     local image_exists=false;
+    # shellcheck disable=SC2034
     for i in {0..20}
     do
       # query the registry
