@@ -27,15 +27,16 @@ setup() {
 }
 
 @test "Testing the build service, docker (build and download docker image, inspect-log)." {
-  # the build image request should fail on the non existing maven mapping ID
-#  run "$PYRSIA_CLI" build docker --image "FAKE_IMAGE_NAME"
-#  refute_output --partial  "successfully"
-#
-#  # confirm the artifact is not already added to pyrsia node
-#  run "$PYRSIA_CLI" inspect-log docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID
-#  refute_output --partial $BUILD_SERVICE_DOCKER_MAPPING_ID
+  # the build image request should fail on the non existing maven mapping ID and non authorized node (node authorization is done later in the code)
+  run "$PYRSIA_CLI" build docker --image "FAKE_IMAGE_NAME"
+  refute_output --partial  "successfully"
+
   # add authorize node
   _set_node_as_authorized "localhost:7889"
+
+  # confirm the artifact is not already added to pyrsia node
+  run "$PYRSIA_CLI" inspect-log docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID
+  refute_output --partial $BUILD_SERVICE_DOCKER_MAPPING_ID
 
   # init the build
   run "$PYRSIA_CLI" build docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID
