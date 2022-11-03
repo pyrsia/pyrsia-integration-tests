@@ -7,8 +7,7 @@ on:
   pull_request:
     types:
       - opened
-      - closed
-      - synchronized
+      - synchronize
       - reopened
       - ready_for_review
 
