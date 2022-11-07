@@ -68,7 +68,7 @@ setup() {
   refute_output --partial 'Error'
 }
 
-@test "Testing 'pyrsia config' CLI, show the config and check the values" {
+@test "Testing 'pyrsia config' CLI, show the config and check the values." {
   run "$PYRSIA_CLI" config --show
   assert_output --partial 'localhost'
   assert_output --partial '7888'
@@ -77,6 +77,44 @@ setup() {
   #echo "$output" >&3
   assert_output --partial 'localhost'
   assert_output --partial '7888'
+}
+
+@test "Testing 'pyrsia config edit' CLI, check if the config can be changed." {
+  # change hostname
+  run "$PYRSIA_CLI" config edit --host host.for.test
+  assert_output --partial 'Node configuration Saved'
+
+  # revert the change
+  run "$PYRSIA_CLI" -c -e --host localhost
+  refute_output --partial 'Invalid'
+
+  # change port
+  run "$PYRSIA_CLI" config edit --port 9999
+  assert_output --partial 'Node configuration Saved'
+  # revert the change
+  run "$PYRSIA_CLI" -c -e --port 7888
+  refute_output --partial 'Invalid'
+
+  # change diskspace
+  run "$PYRSIA_CLI" config edit --diskspace "5 GB"
+  assert_output --partial 'Node configuration Saved'
+  # revert the change
+  run "$PYRSIA_CLI" -c -e --diskspace "10 GB"
+  refute_output --partial 'Invalid'
+
+  # change two or more values at once
+  run "$PYRSIA_CLI" config edit --host 192.168.0.0 --port 9999 --diskspace "5 GB"
+  assert_output --partial 'Node configuration Saved'
+  # revert the change
+  run "$PYRSIA_CLI" -c -e --port 7888 --diskspace "10 GB" --host localhost
+  refute_output --partial 'Invalid'
+}
+
+@test "Testing 'pyrsia config edit' CLI, check if input values are validated." {
+  run "$PYRSIA_CLI" config edit --host .some.localhost --port 65536 --diskspace "10GB"
+  assert_output --partial 'Invalid value for Hostname'
+  assert_output --partial 'Invalid value for Port Number'
+  assert_output --partial 'Invalid value for Disk Allocation'
 }
 
 @test "Testing 'pyrsia version', check if the CLI version shows." {
