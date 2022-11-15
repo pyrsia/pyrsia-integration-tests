@@ -5,6 +5,8 @@ PYRSIA_TEMP_DIR=/tmp/pyrsia_tests/pyrsia
 # the pyrsia binaries
 PYRSIA_TARGET_DIR=$PYRSIA_TEMP_DIR/target/release
 
+load '../lib/logger/load'
+
 _common_setup() {
   # load the bats "extensions"
   load '../lib/test_helper/bats-support/load'
@@ -60,7 +62,8 @@ _common_teardown_file() {
   echo " " >&3
   CLEAN_UP_TEST_ENVIRONMENT=true
   # print docker logs
-  #docker-compose -f "$DOCKER_COMPOSE_PATH" logs >&3
+  local docker_logs=$(docker-compose -f "$DOCKER_COMPOSE_PATH" logs)
+  log DEBUG "${docker_logs}"
   if [ "$CLEAN_UP_TEST_ENVIRONMENT" = true ]; then
     echo "Tearing down the tests environment..." >&3
     echo "Cleaning up the docker images and containers..."  >&3
@@ -84,6 +87,7 @@ _set_node_as_authorized() {
     # obtain the peer id form the node
     PEER_ID=$(curl -s http://"$node_hostname"/status | jq -r ".peer_id")
     if [ -n "$PEER_ID" ] && [ "$PEER_ID" != "null" ]; then
+      log DEBUG "Node added to authorized nodes - peer ID - ${PEER_ID}"
       # the peer id obtained, break
       break
     fi
