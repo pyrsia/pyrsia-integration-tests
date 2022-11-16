@@ -64,7 +64,9 @@ _common_teardown_file() {
   # print docker logs
   local docker_logs
   docker_logs=$(docker-compose -f "$DOCKER_COMPOSE_PATH" logs)
+  log DEBUG "================== START Docker logs for ${DOCKER_COMPOSE_PATH} =================="
   log DEBUG "${docker_logs}"
+  log DEBUG "================== END Docker logs for ${DOCKER_COMPOSE_PATH} =================="
   if [ "$CLEAN_UP_TEST_ENVIRONMENT" = true ]; then
     echo "Tearing down the tests environment..." >&3
     echo "Cleaning up the docker images and containers..."  >&3
