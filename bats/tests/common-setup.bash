@@ -62,7 +62,8 @@ _common_teardown_file() {
   echo " " >&3
   CLEAN_UP_TEST_ENVIRONMENT=true
   # print docker logs
-  local docker_logs=$(docker-compose -f "$DOCKER_COMPOSE_PATH" logs)
+  local docker_logs
+  docker_logs=$(docker-compose -f "$DOCKER_COMPOSE_PATH" logs)
   log DEBUG "${docker_logs}"
   if [ "$CLEAN_UP_TEST_ENVIRONMENT" = true ]; then
     echo "Tearing down the tests environment..." >&3

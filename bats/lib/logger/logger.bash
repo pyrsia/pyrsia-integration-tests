@@ -31,10 +31,11 @@ get_log_level() {
 }
 
 log() {
- # log level
- local log_level_priority=$(get_log_level $TEST_LOG_LEVEL)
+ local log_level_priority
+ log_level_priority=$(get_log_level $TEST_LOG_LEVEL)
  local message_level=$1
- local message_priority=$(get_log_level $message_level)
+ local message_priority
+ message_priority=$(get_log_level $message_level)
  local message=$2
 
  if (( message_priority < 0 )) ; then
