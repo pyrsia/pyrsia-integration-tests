@@ -79,8 +79,8 @@ _common_teardown_file() {
   echo "Done tearing the tests environment!" >&3
 }
 
-# add authorized node
-_set_node_as_authorized() {
+# get peer id of node
+_get_peer_id_of_node() {
   PEER_ID=""
   local node_hostname=$1;
   # wait until the node is ready (the node services are defined in pyrsia-integration-tests/bats/tests/resources/docker/docker-compose_auth_nodes.yml)
@@ -90,7 +90,7 @@ _set_node_as_authorized() {
     # obtain the peer id form the node
     PEER_ID=$(curl -s http://"$node_hostname"/status | jq -r ".peer_id")
     if [ -n "$PEER_ID" ] && [ "$PEER_ID" != "null" ]; then
-      log DEBUG "Node added to authorized nodes - peer ID - ${PEER_ID}"
+      log DEBUG "Peer_id of node: ${PEER_ID}"
       # the peer id obtained, break
       break
     fi
@@ -99,10 +99,5 @@ _set_node_as_authorized() {
   done
   # check if the peer id was obtained
   assert [ -n "$PEER_ID" ] || [ ! "$PEER_ID" == "null" ]
-
-  # add authorize node
-  run "$PYRSIA_CLI" authorize --peer "$PEER_ID"
-  # check if the add authorize node successful
-  assert_output --partial "successfully"
   sleep 5
 }
