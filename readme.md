@@ -24,12 +24,11 @@ Fetch the repository with the dependencies (the submodules are necessary to succ
 
 ```sh
 git clone --recurse-submodules https://github.com/pyrsia/pyrsia-integration-tests.git
-
 ```
 
 In case you forgot to set `--recurse-submodules` during `clone` you can run the following command for the same effect:
 
-```
+```sh
 git submodule update --init
 ```
 
@@ -77,3 +76,41 @@ The docker containers and images created by the tests framework are removed when
 The docker images and containers have to be removed manually if CLEAN_UP_TEST_ENVIRONMENT=false. The Pyrsia integration
 tests also create the temp directory `/tmp/pyrsia_tests`which is not removed by the tests framework and if necessary has to be removed
 manually.
+
+## Troubleshooting
+
+In case of any problems with the tests environment reset the enviroment as follow:
+1) Remove all docker images and containers:
+   ```sh
+      docker system prune --all
+   ```
+2) Remove the integration tests temp directory:
+   ```sh
+      rm -rf /tmp/pyrsia_tests/
+   ```
+
+## Tests logger
+
+Supported logging levels:
+- INFO (default)
+- DEBUG
+- ERROR
+
+How to use logger in the tests:
+
+```sh
+  # load the test from the library
+  load '../lib/logger/load'
+  
+  # print logging messages
+  log INFO  "Info test message!"
+  log DEBUG "Debug test message!"
+  log ERROR "Error test message!"
+```
+
+How to start tests with different logging level (e.g DEBUG):
+
+```sh
+  TEST_LOG_LEVEL=DEBUG REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
+```
+
