@@ -101,11 +101,13 @@ setup() {
   # request an image from the Pyrsia node that hasn't been built yet
   local image_exists=false;
   local URL=http://$CLIENT_HOSTNAME/v2/library/$NODE_DOCKER_IMAGE_NAME/manifests/$NODE_DOCKER_IMAGE_OTHER_TAG/
+  # shellcheck disable=SC2155
   local result=$(curl -sS $URL)
   run echo "$result"
   assert_output --partial "ManifestUnknown"
   sleep 10
 
+  # shellcheck disable=SC2034
   for i in {0..20}
   do
     # query the registry
