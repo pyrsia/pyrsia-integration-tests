@@ -59,14 +59,14 @@ Optional variables for `run_tests.sh` script:
    - Test 'pyrsia ping' CLI, check if the node is up and reachable.
    - Test 'pyrsia status' CLI, check if the node is connected to peers.
    - Test 'pyrsia list' CLI, check if the node returns the list of peers.
-   - Test 'pyrsia config' CLI, show the config and check the values
+   - Test 'pyrsia config' CLI, check if the config can be changed with valid values and shown.
    - Test 'pyrsia version' CLI, check if the CLI version shows.
    - Test 'pyrsia build' help options CLI, check if the build help is shown.
    - Test 'pyrsia inspect-log' help/options CLI, check if the inspect-log help is shown.
    - Test 'pyrsia authorize' help/options CLI, check if the authorize help is shown.
 2) Pyrsia build service
-   - Test the build service, MAVEN (build, inspect-log).
-   - Test the build service, DOCKER (build docker image, inspect-log) (DISABLED)
+   - Test the build service, MAVEN (build, inspect-log) (DISABLED)
+   - Test the build service, DOCKER (build docker image, inspect-log).
 
 ## Clean up tests environment
 
