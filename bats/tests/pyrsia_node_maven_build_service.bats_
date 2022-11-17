@@ -8,6 +8,8 @@ COMMON_SETUP='common-setup'
 DOCKER_COMPOSE_DIR="$REPO_DIR/bats/tests/resources/docker/docker-compose_auth_nodes.yml"
 # maven build service mapping ID
 BUILD_SERVICE_MAVEN_MAPPING_ID="commons-codec:commons-codec:1.15"
+# node_hostname
+NODE_HOSTNAME="localhost:7889"
 
 setup_file() {
   load $COMMON_SETUP
@@ -33,8 +35,12 @@ setup() {
 #  run "$PYRSIA_CLI" inspect-log maven --gav $BUILD_SERVICE_MAVEN_MAPPING_ID
 #  refute_output --partial $BUILD_SERVICE_MAVEN_MAPPING_ID
 
+  # get peer_id of node
+  _get_peer_id_of_node "$NODE_HOSTNAME"
   # add authorize node
-  _set_node_as_authorized "localhost:7889"
+  run "$PYRSIA_CLI" authorize --peer "$PEER_ID"
+  # check if the add authorize node successful
+  assert_output --partial "successfully"
 
   # init the maven build
   run "$PYRSIA_CLI" build maven --gav $BUILD_SERVICE_MAVEN_MAPPING_ID

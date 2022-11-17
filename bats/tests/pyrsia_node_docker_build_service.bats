@@ -7,8 +7,13 @@ DOCKER_COMPOSE_DIR="$REPO_DIR/bats/tests/resources/docker/docker-compose_auth_no
 # docker image tag info
 NODE_DOCKER_IMAGE_NAME="alpine"
 NODE_DOCKER_IMAGE_TAG="3.16"
+NODE_DOCKER_IMAGE_OTHER_TAG="3.15"
 # docker mapping id
 BUILD_SERVICE_DOCKER_MAPPING_ID="$NODE_DOCKER_IMAGE_NAME:$NODE_DOCKER_IMAGE_TAG"
+BUILD_SERVICE_DOCKER_MAPPING_OTHER_ID="$NODE_DOCKER_IMAGE_NAME:$NODE_DOCKER_IMAGE_OTHER_TAG"
+# node_hostname
+NODE_HOSTNAME="localhost:7889"
+CLIENT_HOSTNAME="localhost:7888"
 
 setup_file() {
   load $COMMON_SETUP
@@ -31,8 +36,12 @@ setup() {
   run "$PYRSIA_CLI" build docker --image "FAKE_IMAGE_NAME"
   refute_output --partial  "successfully"
 
+  # get peer_id of node
+  _get_peer_id_of_node "$NODE_HOSTNAME"
   # add authorize node
-  _set_node_as_authorized "localhost:7889"
+  run "$PYRSIA_CLI" authorize --peer "$PEER_ID"
+  # check if the add authorize node successful
+  assert_output --partial "successfully"
 
   # confirm the artifact is not already added to pyrsia node
   run "$PYRSIA_CLI" inspect-log docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID
@@ -66,7 +75,7 @@ setup() {
   do
     # query the registry
     # shellcheck disable=SC2155
-    local result=$(curl --silent http://localhost:7888/v2/library/$NODE_DOCKER_IMAGE_NAME/manifests/$NODE_DOCKER_IMAGE_TAG/)
+    local result=$(curl --silent http://$CLIENT_HOSTNAME/v2/library/$NODE_DOCKER_IMAGE_NAME/manifests/$NODE_DOCKER_IMAGE_TAG/)
 
     if ! [[ $result == *error* ]]; then
       image_exists=true
@@ -79,3 +88,43 @@ setup() {
   assert $image_exists
 }
 
+@test "Verify that a node can't be authorized twice." {
+  # get peer_id of node
+  _get_peer_id_of_node "$NODE_HOSTNAME"
+
+  # try to authorize again
+  run "$PYRSIA_CLI" authorize --peer "$PEER_ID"
+  assert_output "Authorize request failed with error: HTTP status client error (400 Bad Request) for url (http://${CLIENT_HOSTNAME}/authorized_node)"
+}
+
+@test "Verify that a build starts if an artifact is requested but doesn't exist in the transparency log yet." {
+  # request an image from the Pyrsia node that hasn't been built yet
+  local image_exists=false;
+  local URL=http://$CLIENT_HOSTNAME/v2/library/$NODE_DOCKER_IMAGE_NAME/manifests/$NODE_DOCKER_IMAGE_OTHER_TAG/
+  # shellcheck disable=SC2155
+  local result=$(curl -sS $URL)
+  run echo "$result"
+  assert_output --partial "ManifestUnknown"
+  sleep 10
+
+  # shellcheck disable=SC2034
+  for i in {0..20}
+  do
+    # query the registry
+    # shellcheck disable=SC2155
+    result=$(curl --silent $URL)
+
+    if ! [[ $result == *error* ]]; then
+      image_exists=true
+      break
+    fi
+
+    sleep 5
+  done
+
+  assert $image_exists
+
+  # confirm the artifact is already added to pyrsia node
+  run "$PYRSIA_CLI" inspect-log docker --image $BUILD_SERVICE_DOCKER_MAPPING_OTHER_ID
+  assert_output --partial $BUILD_SERVICE_DOCKER_MAPPING_OTHER_ID
+}
