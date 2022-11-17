@@ -109,6 +109,6 @@ How to use logger in the tests:
 How to start the tests with a different logging level (e.g DEBUG):
 
 ```sh
-  TEST_LOG_LEVEL=DEBUG REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
+  TEST_LOG_LEVEL=<log level e.g DEBUG> REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
 ```
 
