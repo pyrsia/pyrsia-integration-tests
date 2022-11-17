@@ -106,6 +106,11 @@ teardown() {
   assert_output --partial 'Invalid value for Hostname'
   assert_output --partial 'Invalid value for Port Number'
   assert_output --partial 'Invalid value for Disk Allocation'
+
+  run "$PYRSIA_CLI" -c -s
+  assert_output --partial 'localhost'
+  assert_output --partial '7888'
+  assert_output --partial '10 GB'
 }
 
 @test "Testing 'pyrsia version', check if the CLI version shows." {
