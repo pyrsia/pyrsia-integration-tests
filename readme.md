@@ -66,9 +66,7 @@ Optional variables for `run_tests.sh` script:
    - Test 'pyrsia authorize' help/options CLI, check if the authorize help is shown.
 2) Pyrsia build service
    - Test the build service, MAVEN (build, inspect-log).
-   - Test the build service, DOCKER (build docker image, inspect-log)
-3) Pyrsia P2P service, client side (project)
-   - TBD
+   - Test the build service, DOCKER (build docker image, inspect-log) (DISABLED)
 
 ## Clean up tests environment
 
@@ -108,7 +106,7 @@ How to use logger in the tests:
   log ERROR "Error test message!"
 ```
 
-How to start tests with different logging level (e.g DEBUG):
+How to start the tests with a different logging level (e.g DEBUG):
 
 ```sh
   TEST_LOG_LEVEL=DEBUG REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
