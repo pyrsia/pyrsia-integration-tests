@@ -4,8 +4,6 @@
 PYRSIA_TEMP_DIR=/tmp/pyrsia_tests/pyrsia
 # the pyrsia binaries
 PYRSIA_TARGET_DIR=$PYRSIA_TEMP_DIR/target/release
-# docker file
-DOCKER_FILE_DIR="$REPO_DIR/bats/tests/resources/docker"
 
 load '../lib/logger/load'
 
@@ -34,7 +32,7 @@ _common_setup_file() {
     git merge origin/$GIT_BRANCH
   else
     mkdir -p $PYRSIA_TEMP_DIR
-    log DEBUG "Cloning Pyrsia repo: repo dir: ${PYRSIA_TARGET_DIR}, repo ${GIT_REPO}, branch: ${GIT_BRANCH}"
+    log DEBUG "Cloning Pyrsia repo: repo dir: ${PYRSIA_TARGET_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
     git clone --branch $GIT_BRANCH $GIT_REPO $PYRSIA_TEMP_DIR
   fi
 
