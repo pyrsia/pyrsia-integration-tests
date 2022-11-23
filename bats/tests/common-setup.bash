@@ -32,7 +32,7 @@ _common_setup_file() {
     git merge origin/$GIT_BRANCH
   else
     mkdir -p $PYRSIA_TEMP_DIR
-    log DEBUG "Cloning Pyrsia repo: repo dir: ${PYRSIA_TARGET_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
+    log DEBUG "Cloning Pyrsia repo: repo dir: ${PYRSIA_TEMP_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
     git clone --branch $GIT_BRANCH $GIT_REPO $PYRSIA_TEMP_DIR
   fi
 
