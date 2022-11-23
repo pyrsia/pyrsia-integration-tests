@@ -23,7 +23,7 @@ _common_setup_file() {
   fi
   # clone or update the sources
   if [ -d $PYRSIA_TEMP_DIR/.git ]; then
-    log DEBUG "Merging Pyrsia changes into existing repo, repo dir: ${PYRSIA_TARGET_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
+    log DEBUG "Merging Pyrsia changes into existing repo, repo dir: ${PYRSIA_TEMP_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
     export GIT_DIR=$PYRSIA_TEMP_DIR/.git
     export GIT_WORK_TREE=$PYRSIA_TEMP_DIR
     git remote set-url origin $GIT_REPO
