@@ -23,6 +23,7 @@ _common_setup_file() {
   fi
   # clone or update the sources
   if [ -d $PYRSIA_TEMP_DIR/.git ]; then
+    log DEBUG "Merging Pyrsia changes into existing repo, repo dir: ${PYRSIA_TEMP_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
     export GIT_DIR=$PYRSIA_TEMP_DIR/.git
     export GIT_WORK_TREE=$PYRSIA_TEMP_DIR
     git remote set-url origin $GIT_REPO
@@ -31,6 +32,7 @@ _common_setup_file() {
     git merge origin/$GIT_BRANCH
   else
     mkdir -p $PYRSIA_TEMP_DIR
+    log DEBUG "Cloning Pyrsia repo: repo dir: ${PYRSIA_TEMP_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
     git clone --branch $GIT_BRANCH $GIT_REPO $PYRSIA_TEMP_DIR
   fi
 
@@ -39,7 +41,10 @@ _common_setup_file() {
   echo "Building Pyrsia CLI completed!" >&3
   echo "Building the Pyrsia node docker image and starting the container, it might take a while..." >&3
   DOCKER_COMPOSE_PATH=$1;
-  docker-compose -f "$DOCKER_COMPOSE_PATH" up -d
+  log DEBUG "Building the docker test image, docker-compose file: ${DOCKER_COMPOSE_PATH}"
+  docker-compose -f "$DOCKER_COMPOSE_PATH" build --build-arg GIT_BRANCH="${GIT_BRANCH}" --build-arg GIT_REPO="${GIT_REPO}"
+  log DEBUG "Starting the test docker containers, docker-compose file: ${DOCKER_COMPOSE_PATH}"
+  docker-compose -f "$DOCKER_COMPOSE_PATH" up -d --no-build
   sleep 10
   # check periodically if the node is up (using pyrsia ping)
   # shellcheck disable=SC2034
@@ -60,7 +65,9 @@ _common_setup_file() {
 _common_teardown_file() {
   unset BATS_TEST_TIMEOUT
   echo " " >&3
-  CLEAN_UP_TEST_ENVIRONMENT=true
+  if [ -z "$CLEAN_UP_TEST_ENVIRONMENT" ]; then
+    CLEAN_UP_TEST_ENVIRONMENT=true
+  fi
   # print docker logs
   local docker_logs
   docker_logs=$(docker-compose -f "$DOCKER_COMPOSE_PATH" logs)
