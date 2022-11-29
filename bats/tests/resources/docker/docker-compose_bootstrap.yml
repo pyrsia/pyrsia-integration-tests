@@ -7,7 +7,6 @@ services:
     command: [/src/entrypoint_bootstrap_node.sh]
     stdin_open: true
     ports:
-      - "8080:8080"
       - "7888:7888"
     volumes:
       - "pyrsia:/tmp"
