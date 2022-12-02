@@ -50,4 +50,4 @@ jobs:
 
       - name: Execute Test Cases
         run: |
-          REPO_DIR="./" CLEAN_UP_TEST_ENVIRONMENT=false ./bats/lib/bats/bin/bats ./bats/tests
+          REPO_DIR="./" CLEAN_UP_TEST_ENVIRONMENT=true ./bats/lib/bats/bin/bats ./bats/tests
