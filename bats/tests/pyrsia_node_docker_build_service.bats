@@ -96,6 +96,12 @@ setup() {
   assert $image_exists
 }
 
+@test "No build status is returned when build id does not exist." {
+  local build_id="b024a136-9021-42a1-b8de-c665c94470f4"
+  run "$PYRSIA_CLI" build status --id $build_id
+  assert_output --partial "Build status for '$build_id' was not found."
+}
+
 @test "Verify that a node can't be authorized twice." {
   # get peer_id of node
   _get_peer_id_of_node "$NODE_HOSTNAME"
