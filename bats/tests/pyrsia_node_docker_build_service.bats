@@ -48,9 +48,11 @@ setup() {
   refute_output --partial $BUILD_SERVICE_DOCKER_MAPPING_ID
 
   # init the build
-  local build_message=$("$PYRSIA_CLI" build docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID)
-  local build_id=`echo $build_message | awk '{ print $8 }'`
-  run echo $build_message
+  local build_message
+  build_message=$("$PYRSIA_CLI" build docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID)
+  local build_id
+  build_id=$(echo "$build_message" | awk '{ print $8 }')
+  run echo "$build_message"
   assert_output --partial "successfully"
 
   # waiting until the build is done => inspect logs available
@@ -64,7 +66,7 @@ setup() {
       # check if build status is present and SUCCESS
       log DEBUG "Build status ID: $build_id"
       log INFO "Check build status for build ID $build_id" >&3
-      run $PYRSIA_CLI build status --id $build_id
+      run $PYRSIA_CLI build status --id "$build_id"
       assert_output --partial "SUCCESS"
       break
     fi
