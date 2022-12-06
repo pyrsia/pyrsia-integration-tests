@@ -35,6 +35,10 @@ _common_setup_file() {
     log DEBUG "Cloning Pyrsia repo: repo dir: ${PYRSIA_TEMP_DIR}, repo: ${GIT_REPO}, branch: ${GIT_BRANCH}"
     git clone --branch $GIT_BRANCH $GIT_REPO $PYRSIA_TEMP_DIR
   fi
+  local latest_commit;
+  latest_commit=$(git -C /tmp/pyrsia_tests/pyrsia log -1 --oneline);
+  log INFO "Integration tests are running using this version of Pyrsia: ${latest_commit}"
+  log INFO "For more details, refer to https://github.com/pyrsia/pyrsia/commit/$(echo "${latest_commit}" | awk '{print $1}') (This link works properly only when you test pyrsia/pyrsia repository.)"
 
   echo "Building the Pyrsia CLI sources (Pyrsia CLI source dir: $PYRSIA_TEMP_DIR), it might take a while..." >&3
   cargo build -q --profile=release --package=pyrsia_cli --manifest-path=$PYRSIA_TEMP_DIR/Cargo.toml
