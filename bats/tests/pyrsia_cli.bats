@@ -28,19 +28,21 @@ teardown() {
 }
 
 @test "Testing 'pyrsia help' CLI, check if the help is shown." {
+  # ignore case in this @test
+  shopt -s nocasematch
   # run pyrsia help
   run "$PYRSIA_CLI" help
   # check if pyrsia help is shown
-  assert_output --partial 'USAGE:'
-  assert_output --partial 'OPTIONS:'
-  assert_output --partial 'SUBCOMMANDS:'
+  assert_output --partial 'Usage:'
+  assert_output --partial 'Commands:'
+  assert_output --partial 'Options:'
 
   # run pyrsia help
   run "$PYRSIA_CLI" -h
   # check if pyrsia help is shown
-  assert_output --partial 'USAGE:'
-  assert_output --partial 'OPTIONS:'
-  assert_output --partial 'SUBCOMMANDS:'
+  assert_output --partial 'Usage:'
+  assert_output --partial 'Commands:'
+  assert_output --partial 'Options:'
 }
 
 @test "Testing 'pyrsia ping' CLI, check if the node is up and reachable." {
