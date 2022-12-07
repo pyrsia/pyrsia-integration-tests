@@ -24,6 +24,7 @@ setup() {
 }
 
 teardown() {
+  shopt -u nocasematch
   run "$PYRSIA_CLI" config edit --host localhost --port 7888 --diskspace "10 GB"
 }
 
