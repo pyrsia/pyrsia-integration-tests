@@ -36,7 +36,7 @@ _common_setup_file() {
     git clone --branch $GIT_BRANCH $GIT_REPO $PYRSIA_TEMP_DIR
   fi
   local latest_commit;
-  latest_commit=$(git -C /tmp/pyrsia_tests/pyrsia log -1 --oneline);
+  latest_commit=$(git -C "${PYRSIA_TEMP_DIR}" log -1 --oneline)
   log INFO "Integration tests are running using this version of Pyrsia: ${latest_commit}"
   log INFO "For more details, refer to https://github.com/pyrsia/pyrsia/commit/$(echo "${latest_commit}" | awk '{print $1}') (This link works properly only when you test pyrsia/pyrsia repository.)"
 
