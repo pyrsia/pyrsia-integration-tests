@@ -78,15 +78,15 @@ teardown() {
 @test "Testing 'pyrsia config' CLI, check if the config can be changed and shown." {
   # change hostname
   run "$PYRSIA_CLI" config edit --host host.for.test
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   # change port
   run "$PYRSIA_CLI" config -e --port 9999
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   # change diskspace
   run "$PYRSIA_CLI" -c edit --diskspace "5 GB"
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   run "$PYRSIA_CLI" config --show
   assert_output --partial 'host.for.test'
@@ -95,7 +95,7 @@ teardown() {
 
   # change two or more values at once
   run "$PYRSIA_CLI" -c -e --host 192.168.0.0 --port 8888 --diskspace "3 GB"
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   run "$PYRSIA_CLI" -c --show
   assert_output --partial '192.168.0.0'
