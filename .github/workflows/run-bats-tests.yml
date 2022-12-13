@@ -10,6 +10,7 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+      - closed
 
 env:
   CARGO_TERM_COLOR: always
@@ -49,3 +50,38 @@ jobs:
       - name: Execute Test Cases
         run: |
           REPO_DIR="./" CLEAN_UP_TEST_ENVIRONMENT=true ./bats/lib/bats/bin/bats ./bats/tests
+
+      # Send the result to Slack when a PR is merged and tests were executed regularly
+      - name: Notify success
+        if: ${{ success() && contains(fromJson('["push", "schedule"]'), github.event_name) }}
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID_FOR_MESSAGES }}
+          # If https://github.com/slackapi/slack-github-action/issues/84 is fixed, payload.json can be shared among the following two steps (DRY).
+          payload: |
+            {
+              "text": "Integration tests finished successfully.",
+              "attachments": [{
+              "title": ":white_check_mark: ${{ github.workflow }} #${{ github.run_number }}",
+              "title_link": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+              "color": "#36a64f"
+              }]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Notify failure
+        if: ${{ failure() && contains(fromJson('["push", "schedule"]'), github.event_name) }}
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID_FOR_ALERTS }}
+          payload: |
+            {
+              "text": "Integration tests failed. Check the following workflow and fix it.",
+              "attachments": [{
+              "title": ":x: ${{ github.workflow }} #${{ github.run_number }}",
+              "title_link": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+              "color": "#ff0000"
+              }]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
