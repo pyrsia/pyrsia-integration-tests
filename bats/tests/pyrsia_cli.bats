@@ -24,23 +24,26 @@ setup() {
 }
 
 teardown() {
+  shopt -u nocasematch
   run "$PYRSIA_CLI" config edit --host localhost --port 7888 --diskspace "10 GB"
 }
 
 @test "Testing 'pyrsia help' CLI, check if the help is shown." {
+  # ignore case in this @test
+  shopt -s nocasematch
   # run pyrsia help
   run "$PYRSIA_CLI" help
   # check if pyrsia help is shown
-  assert_output --partial 'USAGE:'
-  assert_output --partial 'OPTIONS:'
-  assert_output --partial 'SUBCOMMANDS:'
+  assert_output --partial 'Usage:'
+  assert_output --partial 'Commands:'
+  assert_output --partial 'Options:'
 
   # run pyrsia help
   run "$PYRSIA_CLI" -h
   # check if pyrsia help is shown
-  assert_output --partial 'USAGE:'
-  assert_output --partial 'OPTIONS:'
-  assert_output --partial 'SUBCOMMANDS:'
+  assert_output --partial 'Usage:'
+  assert_output --partial 'Commands:'
+  assert_output --partial 'Options:'
 }
 
 @test "Testing 'pyrsia ping' CLI, check if the node is up and reachable." {
@@ -75,15 +78,15 @@ teardown() {
 @test "Testing 'pyrsia config' CLI, check if the config can be changed and shown." {
   # change hostname
   run "$PYRSIA_CLI" config edit --host host.for.test
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   # change port
   run "$PYRSIA_CLI" config -e --port 9999
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   # change diskspace
   run "$PYRSIA_CLI" -c edit --diskspace "5 GB"
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   run "$PYRSIA_CLI" config --show
   assert_output --partial 'host.for.test'
@@ -92,7 +95,7 @@ teardown() {
 
   # change two or more values at once
   run "$PYRSIA_CLI" -c -e --host 192.168.0.0 --port 8888 --diskspace "3 GB"
-  assert_output --partial 'Node configuration Saved'
+  assert_output --partial 'Node configuration saved'
 
   run "$PYRSIA_CLI" -c --show
   assert_output --partial '192.168.0.0'

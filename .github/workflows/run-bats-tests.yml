@@ -10,6 +10,9 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+  push:
+    branches:
+      - main
 
 env:
   CARGO_TERM_COLOR: always
@@ -24,14 +27,15 @@ jobs:
       RUSTC_WRAPPER: /home/runner/.cargo/bin/sccache
       CARGO_INCREMENTAL: 0
     steps:
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           submodules: true
+
+      - name: Get Pyrsia Cargo.toml for Rust Version
+        run: wget https://raw.githubusercontent.com/pyrsia/pyrsia/main/Cargo.toml
+
+      - uses: pyrsia/rust-toolchain@v1
 
       # Use sscache store in GitHub cache
       - uses: actions/cache@v3
@@ -44,9 +48,6 @@ jobs:
           .github/workflows/sccache-linux.sh
           sccache --start-server
           sccache --show-stats
-
-      - name: Install dependencies
-        run: sudo apt-get install protobuf-compiler -y -q
 
       - name: Execute Test Cases
         run: |
