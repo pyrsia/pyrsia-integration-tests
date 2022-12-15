@@ -51,7 +51,7 @@ setup() {
   local build_message
   build_message=$("$PYRSIA_CLI" build docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID)
   local build_id
-  build_id=$(echo "$build_message" | awk '{ print $8 }')
+  build_id=$(echo "$build_message" | awk -F\" '{ print $2 }')
   run echo "$build_message"
   assert_output --partial "successfully"
 
@@ -64,9 +64,8 @@ setup() {
     if [[ "$inspect_log" == *"$BUILD_SERVICE_DOCKER_MAPPING_ID"* ]]; then
       sleep 10
       # check if build status is present and SUCCESS
-      log DEBUG "Build status ID: $build_id"
-      log INFO "Check build status for build ID $build_id" >&3
-      run $PYRSIA_CLI build status --id "$build_id"
+      log INFO "Check build status for build ID $build_id"
+      run $PYRSIA_CLI build status --id $build_id
       assert_output --partial "SUCCESS"
       break
     fi
