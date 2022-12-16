@@ -171,3 +171,14 @@ teardown() {
   # check if the authorize help is shown
   assert_output --partial 'peer'
 }
+
+@test "Testing 'pyrsia build status' help/options, check if the authorize help is shown." {
+  # run pyrsia authorize log help
+  run "$PYRSIA_CLI" build status -h
+  # check if the authorize help is shown
+  assert_output --partial '--id'
+
+  run "$PYRSIA_CLI" build status
+  # check if the authorize help is shown
+  assert_output --partial '--id'
+}

@@ -48,7 +48,11 @@ setup() {
   refute_output --partial $BUILD_SERVICE_DOCKER_MAPPING_ID
 
   # init the build
-  run "$PYRSIA_CLI" build docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID
+  local build_message
+  build_message=$("$PYRSIA_CLI" build docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID)
+  local build_id
+  build_id=$(echo "$build_message" | awk -F\" '{ print $2 }')
+  run echo "$build_message"
   assert_output --partial "successfully"
 
   # waiting until the build is done => inspect logs available
@@ -58,6 +62,11 @@ setup() {
   do
     inspect_log=$($PYRSIA_CLI inspect-log docker --image $BUILD_SERVICE_DOCKER_MAPPING_ID)
     if [[ "$inspect_log" == *"$BUILD_SERVICE_DOCKER_MAPPING_ID"* ]]; then
+      sleep 10
+      # check if build status is present and SUCCESS
+      log INFO "Check build status for build ID $build_id"
+      run $PYRSIA_CLI build status --id $build_id
+      assert_output --partial "SUCCESS"
       break
     fi
     sleep 5
@@ -86,6 +95,12 @@ setup() {
   done
 
   assert $image_exists
+}
+
+@test "No build status is returned when build id does not exist." {
+  local build_id="b024a136-9021-42a1-b8de-c665c94470f4"
+  run "$PYRSIA_CLI" build status --id $build_id
+  assert_output --partial "Build status for '$build_id' was not found."
 }
 
 @test "Verify that a node can't be authorized twice." {
