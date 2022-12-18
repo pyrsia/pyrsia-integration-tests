@@ -48,9 +48,17 @@ Run the tests:
 REPO_DIR=<path to your integration tests repo> $REPO_DIR/bats/run_tests.sh
 ```
 
-Optional variables for `run_tests.sh` script:
+To run tests on your brunch you should define variables:
 - `GIT_REPO=<git repository URL>`, default value: `https://github.com/pyrsia/pyrsia.git`
 - `GIT_BRANCH=<branch repository name>`, default value: `main`
+
+For example, to run tests from the folder with cloned `pyrsia-integration-tests` repo, you can use following commands:
+```sh
+export GIT_REPO=<your_forked_pyrsia_repo_url>
+export GIT_BRANCH=<brunch_name_to_test>
+export REPO_DIR=.
+./bats/run_tests.sh
+```
 
 ## Tests (scope)
 
