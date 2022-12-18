@@ -101,6 +101,7 @@ setup() {
   local build_id="b024a136-9021-42a1-b8de-c665c94470f4"
   run "$PYRSIA_CLI" build status --id $build_id
   assert_output --partial "Build status for '$build_id' was not found"
+  assert_output --partial "Failed to fetch build status"
 }
 
 @test "Verify that a node can't be authorized twice." {
@@ -110,6 +111,7 @@ setup() {
   # try to authorize again
   run "$PYRSIA_CLI" authorize --peer "$PEER_ID"
   assert_output --partial "Authorize request failed with error: HTTP status error (400 Bad Request) for url (http://${CLIENT_HOSTNAME}/authorized_node)"
+  assert_output --partial "already exists in transparency log"
 }
 
 @test "Verify that a build starts if an artifact is requested but doesn't exist in the transparency log yet." {
