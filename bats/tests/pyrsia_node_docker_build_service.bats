@@ -65,7 +65,7 @@ setup() {
       sleep 10
       # check if build status is present and SUCCESS
       log INFO "Check build status for build ID $build_id"
-      run $PYRSIA_CLI build status --id $build_id
+      run $PYRSIA_CLI build status --id "$build_id"
       assert_output --partial "SUCCESS"
       break
     fi
