@@ -65,7 +65,7 @@ setup() {
       sleep 10
       # check if build status is present and SUCCESS
       log INFO "Check build status for build ID $build_id"
-      run $PYRSIA_CLI build status --id $build_id
+      run $PYRSIA_CLI build status --id "$build_id"
       assert_output --partial "SUCCESS"
       break
     fi
@@ -100,7 +100,8 @@ setup() {
 @test "No build status is returned when build id does not exist." {
   local build_id="b024a136-9021-42a1-b8de-c665c94470f4"
   run "$PYRSIA_CLI" build status --id $build_id
-  assert_output --partial "Build status for '$build_id' was not found."
+  assert_output --partial "'$build_id' was not found"
+  assert_output --partial "Failed to fetch"
 }
 
 @test "Verify that a node can't be authorized twice." {
@@ -109,7 +110,8 @@ setup() {
 
   # try to authorize again
   run "$PYRSIA_CLI" authorize --peer "$PEER_ID"
-  assert_output "Authorize request failed with error: HTTP status client error (400 Bad Request) for url (http://${CLIENT_HOSTNAME}/authorized_node)"
+  assert_output --partial "400 Bad"
+  assert_output --partial "already exists"
 }
 
 @test "Verify that a build starts if an artifact is requested but doesn't exist in the transparency log yet." {
