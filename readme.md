@@ -52,7 +52,7 @@ To run tests on your branch you should define variables:
 - `GIT_REPO=<git repository URL>`, default value: `https://github.com/pyrsia/pyrsia.git`
 - `GIT_BRANCH=<branch repository name>`, default value: `main`
 
-For example, to run tests from the folder with cloned `pyrsia-integration-tests` repo, you can use following commands:
+For example, to run tests from the folder with cloned `pyrsia-integration-tests` repo, you can use following command:
 ```sh
 GIT_REPO=<your forked pyrsia repo url> \ 
 GIT_BRANCH=<branch name to test> \
