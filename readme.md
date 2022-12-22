@@ -54,9 +54,10 @@ To run tests on your branch you should define variables:
 
 For example, to run tests from the folder with cloned `pyrsia-integration-tests` repo, you can use following commands:
 ```sh
-export GIT_REPO=<your_forked_pyrsia_repo_url>
-export GIT_BRANCH=<branch_name_to_test>
-export REPO_DIR=.
+GIT_REPO=<your forked pyrsia repo url> \ 
+GIT_BRANCH=<branch name to test> \
+TEST_LOG_LEVEL=debug \
+REPO_DIR=. \
 ./bats/run_tests.sh
 ```
 
